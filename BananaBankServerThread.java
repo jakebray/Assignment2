@@ -46,38 +46,27 @@ public class BananaBankServerThread extends Thread {
 					Account srcAccount, destAccount;
 					if ((srcAccount = bank.getAccount(src)) != null) {
 						if ((destAccount = bank.getAccount(dest)) != null) {
-							// check to make sure amount is valid for src
-							// account
-							if (srcAccount.getBalance() - amount >= 0) {
-								// acquire locks in increasing account number
-								// order
-								if (srcAccount.getAccountNumber() < destAccount
-										.getAccountNumber()) {
-									synchronized (srcAccount) {
-										synchronized (destAccount) {
-											srcAccount.transferTo(amount,
-													destAccount);
-											out.println(amount
-													+ " transferred from account "
-													+ src + " to account "
-													+ dest);
-										}
-									}
-								} else {
-									synchronized (destAccount) {
-										synchronized (srcAccount) {
-											srcAccount.transferTo(amount,
-													destAccount);
-											out.println(amount
-													+ " transferred from account "
-													+ src + " to account "
-													+ dest);
-										}
-									}
-								}
-
+							// acquire locks in increasing account number
+							// order
+							Account lesserID;
+							Account greaterID;
+							if (srcAccount.getAccountNumber() < destAccount
+									.getAccountNumber()) {
+								lesserID = srcAccount;
+								greaterID = destAccount;
 							} else {
-								out.println("Source account does not have sufficient funds!");
+								lesserID = destAccount;
+								greaterID = srcAccount;
+							}
+							synchronized (lesserID) {
+								synchronized (greaterID) {
+									srcAccount.transferTo(amount,
+											destAccount);
+									out.println(amount
+											+ " transferred from account "
+											+ src + " to account "
+											+ dest);
+								}
 							}
 						} else {
 							out.println("Invalid destination account!");
