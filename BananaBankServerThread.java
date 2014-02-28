@@ -21,8 +21,7 @@ public class BananaBankServerThread extends Thread {
 		BufferedReader in;
 		PrintStream out = null;
 		try {
-			in = new BufferedReader(new InputStreamReader(
-					cs.getInputStream()));
+			in = new BufferedReader(new InputStreamReader(cs.getInputStream()));
 			out = new PrintStream(cs.getOutputStream());
 			String line;
 			while ((line = in.readLine()) != null) {
@@ -53,25 +52,30 @@ public class BananaBankServerThread extends Thread {
 							if (srcAccount.getBalance() - amount >= 0) {
 
 								// TODO fund transfer here
-								
-								// acquire locks in increasing account number order
-								if(srcAccount.getAccountNumber() < destAccount.getAccountNumber())
-								{
+
+								// acquire locks in increasing account number
+								// order
+								if (srcAccount.getAccountNumber() < destAccount
+										.getAccountNumber()) {
 									synchronized (srcAccount) {
 										synchronized (destAccount) {
-											srcAccount.transferTo(amount, destAccount);
+											srcAccount.transferTo(amount,
+													destAccount);
 											out.println(amount
-													+ " transferred from account " + src
-													+ " to account " + dest);
+													+ " transferred from account "
+													+ src + " to account "
+													+ dest);
 										}
 									}
 								} else {
 									synchronized (destAccount) {
 										synchronized (srcAccount) {
-											srcAccount.transferTo(amount, destAccount);
+											srcAccount.transferTo(amount,
+													destAccount);
 											out.println(amount
-													+ " transferred from account " + src
-													+ " to account " + dest);
+													+ " transferred from account "
+													+ src + " to account "
+													+ dest);
 										}
 									}
 								}

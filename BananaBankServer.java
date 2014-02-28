@@ -27,9 +27,11 @@ public class BananaBankServer {
 		ss = new ServerSocket(PORT);
 		System.out.println("BananaBankServer Started");
 
+		System.out.println("Loading accounts");
 		// load accounts
 		bank = new BananaBank(ACCOUNT_FILE);
 
+		System.out.println("Serving clients");
 		try {
 			while (true) {
 				Socket cs = ss.accept();
@@ -43,8 +45,7 @@ public class BananaBankServer {
 		}
 		
 		// wait for threads to finish;
-		for (BananaBankServerThread t : BananaBankServer
-				.getThreads()) {
+		for (BananaBankServerThread t : threads) {
 			try {
 				t.join();
 			} catch (InterruptedException e1) {
@@ -52,7 +53,7 @@ public class BananaBankServer {
 			}
 		}
 
-		System.out.println("Saving file");
+		System.out.println("Saving accounts");
 		// store account info back to file
 		bank.save(ACCOUNT_FILE);
 
@@ -70,9 +71,5 @@ public class BananaBankServer {
 	public static void shutDown(Socket S) throws IOException {
 		shutDownSocket = S;
 		ss.close();
-	}
-
-	public static ArrayList<BananaBankServerThread> getThreads() {
-		return threads;
 	}
 }
