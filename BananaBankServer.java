@@ -57,7 +57,6 @@ public class BananaBankServer {
 		// store account info back to file
 		bank.save(ACCOUNT_FILE);
 
-		// TODO send total money amount back to shutdown client
 		PrintStream out = new PrintStream(shutDownSocket.getOutputStream());
 		int total = 0;
 		for (Account a : bank.getAllAccounts()) {

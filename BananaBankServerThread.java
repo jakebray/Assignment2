@@ -32,7 +32,6 @@ public class BananaBankServerThread extends Thread {
 					// only allow SHUTDOWN from local client
 					if (cs.getInetAddress().toString().equals("/127.0.0.1")) {
 
-						// TODO Shutdown sequence
 						BananaBankServer.shutDown(cs);
 						return;
 
@@ -50,9 +49,6 @@ public class BananaBankServerThread extends Thread {
 							// check to make sure amount is valid for src
 							// account
 							if (srcAccount.getBalance() - amount >= 0) {
-
-								// TODO fund transfer here
-
 								// acquire locks in increasing account number
 								// order
 								if (srcAccount.getAccountNumber() < destAccount
